@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
-#define N 50
-#define M 50
 /*
 判断能否移动
 1. 能够相消
@@ -18,9 +16,6 @@
 1. 一次移动，每个格子只合并一次
 2. 按顺序合并，例如，从下往上滑动时，先从最下面的一个和最下面的倒数第二个判断
 */
-char str[N][M] = {"\t*********",       "\t*1024\t1024\t1024\t1024*",
-                  "\t*2\t2\t2\t2\t*",  "\t*2\t2\t2\t32*",
-                  "\t*128\t2\t2\t16*", "*********"};
 int board[4][4];
 void Show() {
   for (int i = 0; i < 4; i++) {
@@ -55,7 +50,7 @@ void W() {
         board[j][i] = 0;
       }
     }
-    int length = concat(queue, k);  // 对这几个数字进行合并
+    int length = concat(queue, k);
     for (int j = 0; j < length; j++) {
       board[j][i] = queue[j];
     }
@@ -63,27 +58,22 @@ void W() {
 }
 void S() {
   for (int i = 0; i < 4; i++) {
-    // 每列都要单独判断
-    // 使用队列，先进先出
     int queue[4];
     int k = 0;
     for (int j = 0; j < 4; j++) {
-      if (board[3 - j][i] != 0) {  // j  4-1-j
+      if (board[3 - j][i] != 0) {
         queue[k++] = board[3 - j][i];
         board[3 - j][i] = 0;
       }
     }
-    int length = concat(queue, k);  // 对这几个数字进行合并
+    int length = concat(queue, k);
     for (int j = 0; j < length; j++) {
       board[3 - j][i] = queue[j];
     }
   }
 }
 void A() {
-  // 从下往上判断
   for (int i = 0; i < 4; i++) {
-    // 每列都要单独判断
-    // 使用队列，先进先出
     int queue[4];
     int k = 0;
     for (int j = 0; j < 4; j++) {
@@ -92,7 +82,7 @@ void A() {
         board[i][j] = 0;
       }
     }
-    int length = concat(queue, k);  // 对这几个数字进行合并
+    int length = concat(queue, k);
     for (int j = 0; j < length; j++) {
       board[i][j] = queue[j];
     }
@@ -100,17 +90,15 @@ void A() {
 }
 void D() {
   for (int i = 0; i < 4; i++) {
-    // 每列都要单独判断
-    // 使用队列，先进先出
     int queue[4];
     int k = 0;
     for (int j = 0; j < 4; j++) {
-      if (board[i][3 - j] != 0) {  // j  4-1-j
+      if (board[i][3 - j] != 0) {
         queue[k++] = board[i][3 - j];
         board[i][3 - j] = 0;
       }
     }
-    int length = concat(queue, k);  // 对这几个数字进行合并
+    int length = concat(queue, k);
     for (int j = 0; j < length; j++) {
       board[i][3 - j] = queue[j];
     }
@@ -118,22 +106,13 @@ void D() {
 }
 void newcorr(int *x, int *y) {
   srand((unsigned)time(NULL));
-  *x = rand() % 4;
+  *x = rand() % 4;  // 输出的数字在0~3
   *y = rand() % 4;
 }
 int main(int argc, char const *argv[]) {
   for (int i = 0; i < 4; i++) {
     memset(board[i], 0, sizeof(board[i]));
   }
-  // board[0][0] = 0;
-  // board[1][0] = 0;
-  // board[2][0] = 0;
-  // board[3][0] = 2;
-
-  // board[0][1] = 4;
-  // board[1][1] = 4;
-  // board[2][1] = 0;
-  // board[3][1] = 8;
   int x, y;
   newcorr(&x, &y);
   board[x][y] = 2;
